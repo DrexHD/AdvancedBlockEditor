@@ -6,7 +6,6 @@
   "mixins": [
     "BlockDisplayAccessor",
     "DisplayAccessor",
-    "DisplayMixin",
     "EntityAccessor",
     "ServerPlayerMixin"
   ],

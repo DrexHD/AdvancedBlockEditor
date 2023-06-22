@@ -4,7 +4,6 @@ import com.mojang.math.Transformation;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
 import me.drex.advancedblockeditor.mixin.EntityAccessor;
 import me.drex.advancedblockeditor.util.interfaces.EditingPlayer;
-import me.drex.advancedblockeditor.util.interfaces.RotatingDisplay;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -131,13 +130,9 @@ public final class EditingContext {
             Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) originDisplay).getEntityData());
             Matrix4f matrix = transformation.getMatrix();
 
-            Vector3f rotationVector;
-            if (useYPRRotation()) {
-                rotationVector = ((RotatingDisplay) originDisplay).getRotationYPR().toVector3f();
-            } else {
-                Quaternionf axisAngleQuaternion = matrix.getRotation(new AxisAngle4f()).get(new Quaternionf());
-                rotationVector = axisAngleQuaternion.getEulerAnglesXYZ(new Vector3f());
-            }
+
+            Quaternionf axisAngleQuaternion = matrix.getRotation(new AxisAngle4f()).get(new Quaternionf());
+            Vector3f rotationVector = axisAngleQuaternion.getEulerAnglesXYZ(new Vector3f());;
             int brightnessOverride = ((DisplayAccessor)originDisplay).invokeGetPackedBrightnessOverride();
             Brightness brightness = brightnessOverride != -1 ? Brightness.unpack(brightnessOverride) : null;
             this.placeholders = mergePlaceholders(

@@ -6,7 +6,6 @@ import me.drex.advancedblockeditor.gui.MainGui;
 import me.drex.advancedblockeditor.mixin.BlockDisplayAccessor;
 import me.drex.advancedblockeditor.util.BlockDisplaySelector;
 import me.drex.advancedblockeditor.util.interfaces.EditingPlayer;
-import me.drex.advancedblockeditor.util.interfaces.RotatingDisplay;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -140,8 +139,6 @@ public class AdvancedBlockEditorMod implements DedicatedServerModInitializer {
             blockDisplay.setYRot(0);
             blockDisplay.setXRot(0);
             blockDisplay.moveTo(pos);
-            ((RotatingDisplay)blockDisplay).setUntransformedPos(pos);
-            ((RotatingDisplay)blockDisplay).initAdvancedBlock();
             if (tag != null) {
                 ((BlockDisplayAccessor) blockDisplay).invokeReadAdditionalSaveData(tag);
             } else {

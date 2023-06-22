@@ -7,7 +7,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.math.Transformation;
 import me.drex.advancedblockeditor.mixin.BlockDisplayAccessor;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
-import me.drex.advancedblockeditor.util.interfaces.RotatingDisplay;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
@@ -62,8 +61,6 @@ public class ScaleCommand {
                 blockDisplay.setYRot(0);
                 blockDisplay.setXRot(0);
                 blockDisplay.moveTo(origin.x - dx, origin.y - dy, origin.z - dz);
-                ((RotatingDisplay)blockDisplay).setUntransformedPos(new Vec3(origin.x - dx, origin.y - dy, origin.z - dz));
-                ((RotatingDisplay)blockDisplay).initAdvancedBlock();
                 ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(null, null, new Vector3f((float) scale, (float) scale, (float) scale), null));
                 //((DisplayAccessor) blockDisplay).invokeSetViewRange(5);
             }, BlockPos.containing(origin.x - dx, origin.y - dy, origin.z - dz), MobSpawnType.COMMAND, false, false);
