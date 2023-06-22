@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "advanced-block-editor",
+  "version": "${version}",
+  "name": "Advanced Block Editor",
+  "description": "An advanced block editor mod, very useful for builders that want to build outside the 1x1 minecraft grid",
+  "authors": [
+    "Drex"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "server": [
+      "me.drex.advancedblockeditor.AdvancedBlockEditorMod"
+    ]
+  },
+  "mixins": [
+    "advanced-block-editor.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.14",
+    "fabric": "*"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "gui.advanced_block_editor.action.light.block": "Block light (${brightness_block})",
+  "gui.advanced_block_editor.action.light.sky": "Sky light (${brightness_sky})",
+  "gui.advanced_block_editor.action.light.reset": "<red>Reset light override",
+  "gui.advanced_block_editor.action.light.override": "<red>Override display light",
+
+  "gui.advanced_block_editor.action.move.x": "Move along X axis",
+  "gui.advanced_block_editor.action.move.y": "Move along Y axis",
+  "gui.advanced_block_editor.action.move.z": "Move along Z axis",
+  "gui.advanced_block_editor.action.move.look": "Move forward",
+
+  "gui.advanced_block_editor.action.move.positive.full": "<green>Move <bold>${move_delta}</bold> blocks",
+  "gui.advanced_block_editor.action.move.positive.half": "<green>Move <bold>${move_delta_half}</bold> blocks",
+  "gui.advanced_block_editor.action.move.negative.full": "<red>Move <bold>-${move_delta}</bold> blocks",
+  "gui.advanced_block_editor.action.move.negative.half": "<red>Move <bold>-${move_delta_half}</bold> blocks",
+
+  "gui.advanced_block_editor.action.scale.x": "Scale along X axis",
+  "gui.advanced_block_editor.action.scale.y": "Scale along Y axis",
+  "gui.advanced_block_editor.action.scale.z": "Scale along Z axis",
+  "gui.advanced_block_editor.action.scale.look": "Scale forward",
+  "gui.advanced_block_editor.action.scale.positive": "<green>Increase scale by <bold>${scale_delta}</bold> blocks",
+  "gui.advanced_block_editor.action.scale.negative": "<red>Decrease scale by <bold>${scale_delta}</bold> blocks",
+  "gui.advanced_block_editor.action.scale.reset": "<white>Reset scale",
+
+  "gui.advanced_block_editor.action.relative_scale.positive": "<green>Scale <bold>+${relative_scale_delta}%</bold>",
+  "gui.advanced_block_editor.action.relative_scale.negative": "<red>Scale <bold>-${relative_scale_delta_inverse}%</bold>",
+
+  "gui.advanced_block_editor.action.rotation_ypr.x": "<red>Pitch axis",
+  "gui.advanced_block_editor.action.rotation_ypr.y": "<green>Yaw axis",
+  "gui.advanced_block_editor.action.rotation_ypr.z": "<blue>Roll axis",
+  "gui.advanced_block_editor.action.rotation_ypr.reset": "<white>Reset rotation",
+
+  "text.advanced_block_editor.brightness.not_set": "Not set",
+
+  "gui.advanced_block_editor.entry.clone": "<blue>Clone entities",
+  "gui.advanced_block_editor.entry.template": "<blue>Create Template Item",
+  "gui.advanced_block_editor.entry.scale": "<light_purple>Scale",
+  "gui.advanced_block_editor.entry.rotation": "<gold>Rotate",
+  "gui.advanced_block_editor.entry.move": "<aqua>Move",
+  "gui.advanced_block_editor.entry.brightness": "<yellow>Brightness",
+  "gui.advanced_block_editor.entry.nbt": "<green>NBT Data",
+  "gui.advanced_block_editor.entry.destroy": "<bold><red>Destroy",
+
+  "gui.advanced_block_editor.back": "<red>Back",
+  "gui.advanced_block_editor.close": "<red>Close",
+
+  "text.advanced_block_editor.actionbar.scale": "Current scale: <red>${scale_x} <gray>x <green>${scale_y} <gray>x <blue>${scale_z} <dark_gray>| <white>Factor: <gold>${scale_delta}",
+  "text.advanced_block_editor.actionbar.relative_scale": "Current scale: <red>${scale_x} <gray>x <green>${scale_y} <gray>x <blue>${scale_z} <dark_gray>| <white>Factor: <green>+${relative_scale_delta}% <gray>/ <red>-${relative_scale_delta_inverse}%",
+  "text.advanced_block_editor.actionbar.light": "Current light: <yellow>Block: ${brightness_block}<gray>, <aqua>Sky: ${brightness_sky}",
+  "text.advanced_block_editor.actionbar.move": "Current position: <red>${pos_x} <gray>/ <green>${pos_y} <gray>/ <blue>${pos_z} <dark_gray>| <white>Distance: <gold>${move_delta}",
+  "text.advanced_block_editor.actionbar.rotation": "Current rotation: <red>${rotation_x}° <gray>/ <green>${rotation_y}° <gray>/ <blue>${rotation_z}° <dark_gray>| <white>Rotation: <gold>${rotation_delta}°",
+  "text.advanced_block_editor.actionbar.main": "<gold>${count} <white>blocks selected",
+  "text.advanced_block_editor.item.template": "<light_purple>${block} (Template)",
+
+  "text.advanced_block_editor.direction.south": "<blue>South",
+  "text.advanced_block_editor.direction.north": "<blue>North",
+  "text.advanced_block_editor.direction.west": "<red>West",
+  "text.advanced_block_editor.direction.east": "<red>East",
+  "text.advanced_block_editor.direction.up": "<green>Up",
+  "text.advanced_block_editor.direction.down": "<green>Down"
+}
