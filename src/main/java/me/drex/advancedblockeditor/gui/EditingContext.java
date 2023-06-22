@@ -55,42 +55,12 @@ public final class EditingContext {
         this(player, Collections.singletonList(originDisplay));
     }
 
-    // TODO:
     public double relativeScaleDelta() {
         return relativeScale.getResult();
-//        return 1 + Math.pow(2, relativeScaleDelta);
     }
 
-    // TODO:
     public double moveDelta() {
         return move.getResult();
-//        return Math.pow(2, moveDeltaExp);
-    }
-
-    // TODO: use everywhere
-    public Vec3 originPos() {
-        // minimum
-        /*double minX = Double.MAX_VALUE;
-        double minY = Double.MAX_VALUE;
-        double minZ = Double.MAX_VALUE;
-        for (Display.BlockDisplay blockDisplay : blockDisplays) {
-            minX = Math.min(minX, blockDisplay.position().x);
-            minY = Math.min(minY, blockDisplay.position().y);
-            minZ = Math.min(minZ, blockDisplay.position().z);
-        }
-        return new Vec3(minX, minY, minZ);*/
-        // Average
-        /*double x = 0;
-        double y = 0;
-        double z = 0;
-        for (Display.BlockDisplay blockDisplay : blockDisplays) {
-            x += blockDisplay.position().x;
-            y += blockDisplay.position().y;
-            z += blockDisplay.position().z;
-        }
-
-        return new Vec3(x / blockDisplays.size(), y / blockDisplays.size(), z / blockDisplays.size());*/
-        return originDisplay.position();
     }
 
     public void onTick() {
@@ -105,10 +75,6 @@ public final class EditingContext {
 
     public boolean hasMultipleDisplays() {
         return blockDisplays.size() > 1;
-    }
-
-    public boolean useYPRRotation() {
-        return /*!hasMultipleDisplays() && ((RotatingDisplay) originDisplay).isAdvancedBlock();*/false;
     }
 
     public void updateOriginDisplay() {

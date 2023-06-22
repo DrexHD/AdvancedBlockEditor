@@ -18,15 +18,6 @@ public interface DisplayAccessor {
     void invokeSetTransformation(Transformation transformation);
 
     @Invoker
-    void invokeSetViewRange(float f);
-
-    @Invoker
-    void invokeSetInterpolationDelay(int i);
-
-    @Invoker
-    void invokeSetInterpolationDuration(int i);
-
-    @Invoker
     int invokeGetPackedBrightnessOverride();
 
     @Invoker

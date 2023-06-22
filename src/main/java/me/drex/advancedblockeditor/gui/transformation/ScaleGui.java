@@ -86,8 +86,6 @@ public class ScaleGui extends BaseGui {
                     null,
                     transformation.getRightRotation()
             ));
-//            ((DisplayAccessor) blockDisplay).invokeSetInterpolationDuration(5);
-//            ((DisplayAccessor) blockDisplay).invokeSetInterpolationDelay(0);
         }
     }
 
@@ -121,8 +119,6 @@ public class ScaleGui extends BaseGui {
                 oldScale,
                 transformation.getRightRotation()
         ));
-//        ((DisplayAccessor) blockDisplay).invokeSetInterpolationDuration(5);
-//        ((DisplayAccessor) blockDisplay).invokeSetInterpolationDelay(0);
     }
 
     @Override

@@ -8,8 +8,6 @@ public interface EditingPlayer {
 
     boolean isEditing();
 
-    void setSelecting(boolean selecting);
-
     boolean isSelecting();
 
     void setPos1(Vec3 pos1);

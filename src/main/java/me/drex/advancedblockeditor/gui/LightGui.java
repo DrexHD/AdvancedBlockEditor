@@ -22,7 +22,6 @@ public class LightGui extends BaseGui {
     @Override
     protected void buildUi() {
         int brightnessOverride = ((DisplayAccessor)context.originDisplay).invokeGetPackedBrightnessOverride();
-        // TODO: what if it's not set / you want to reset it
         if (brightnessOverride != -1) {
             Brightness brightness = Brightness.unpack(brightnessOverride);
             ItemStack block = new ItemStack(Items.LIGHT);

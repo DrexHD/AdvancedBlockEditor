@@ -4,9 +4,9 @@
   "gui.advanced_block_editor.action.light.reset": "<red>Reset light override",
   "gui.advanced_block_editor.action.light.override": "<red>Override display light",
 
-  "gui.advanced_block_editor.action.move.x": "Move along X axis",
-  "gui.advanced_block_editor.action.move.y": "Move along Y axis",
-  "gui.advanced_block_editor.action.move.z": "Move along Z axis",
+  "gui.advanced_block_editor.action.move.x": "Move along <red>X</red> axis",
+  "gui.advanced_block_editor.action.move.y": "Move along <green>Y</green> axis",
+  "gui.advanced_block_editor.action.move.z": "Move along <blue>Z</blue> axis",
   "gui.advanced_block_editor.action.move.look": "Move forward",
 
   "gui.advanced_block_editor.action.move.positive.full": "<green>Move <bold>${move_delta}</bold> blocks",
@@ -29,6 +29,10 @@
   "gui.advanced_block_editor.action.rotation_ypr.y": "<green>Yaw axis",
   "gui.advanced_block_editor.action.rotation_ypr.z": "<blue>Roll axis",
   "gui.advanced_block_editor.action.rotation_ypr.reset": "<white>Reset rotation",
+
+  "gui.advanced_block_editor.action.rotation.x": "<red>Rotate local X",
+  "gui.advanced_block_editor.action.rotation.y": "<green>Rotate local Y",
+  "gui.advanced_block_editor.action.rotation.z": "<blue>Rotate local Z",
 
   "text.advanced_block_editor.brightness.not_set": "Not set",
 

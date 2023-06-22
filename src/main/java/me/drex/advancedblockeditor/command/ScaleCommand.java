@@ -34,8 +34,6 @@ public class ScaleCommand {
     }
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        // TODO: clean up
-        // /execute align xyz run advancedblockeditor scale -1386 67 -3107 -1388 67 -3105 1
         double scale = DoubleArgumentType.getDouble(context, "scale");
         BlockPos from = BlockPosArgument.getLoadedBlockPos(context, "from");
         BoundingBox boundingBox = BoundingBox.fromCorners(from, BlockPosArgument.getLoadedBlockPos(context, "to"));
@@ -62,7 +60,6 @@ public class ScaleCommand {
                 blockDisplay.setXRot(0);
                 blockDisplay.moveTo(origin.x - dx, origin.y - dy, origin.z - dz);
                 ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(null, null, new Vector3f((float) scale, (float) scale, (float) scale), null));
-                //((DisplayAccessor) blockDisplay).invokeSetViewRange(5);
             }, BlockPos.containing(origin.x - dx, origin.y - dy, origin.z - dz), MobSpawnType.COMMAND, false, false);
 
         }

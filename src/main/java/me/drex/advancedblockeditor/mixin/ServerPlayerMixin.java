@@ -41,7 +41,6 @@ import static me.drex.advancedblockeditor.AdvancedBlockEditorMod.getSelectLocati
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player implements EditingPlayer {
 
-    // TODO: Keep a list of last x selected / used entities, to make it easier to undo mistakes
     @Shadow
     public ServerGamePacketListenerImpl connection;
 
@@ -113,13 +112,11 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
 
     private void updateSelectedList(List<Display.BlockDisplay> updatedList) {
         for (Display.BlockDisplay blockDisplay : lastSelectedList) {
-//            blockDisplay.setGlowingTag(false);
             ((EntityAccessor) blockDisplay).invokeSetSharedFlag(Entity.FLAG_GLOWING, false);
         }
         lastSelectedList.clear();
         lastSelectedList.addAll(updatedList);
         for (Display.BlockDisplay blockDisplay : lastSelectedList) {
-//            blockDisplay.setGlowingTag(true);
             ((EntityAccessor) blockDisplay).invokeSetSharedFlag(Entity.FLAG_GLOWING, true);
 
         }
@@ -127,7 +124,7 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
 
     @Inject(method = "doTick", at = @At("HEAD"))
     private void onPlayerTick(CallbackInfo ci) {
-        if (((EditingPlayer) this).isEditing()) return;
+        if (editing) return;
         selecting = false;
         ItemStack mainHandItem = this.getMainHandItem();
         if (mainHandItem.is(Items.PRISMARINE_SHARD)) {
@@ -147,9 +144,7 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
             }
             Vec3 selectLocation = getSelectLocation((ServerPlayer) (Object) this);
             this.connection.send(new ClientboundLevelParticlesPacket(new DustParticleOptions(new Vector3f(0.5f, 0.5f, 0.5f), 0.5f), false, selectLocation.x, selectLocation.y, selectLocation.z, 0, 0, 0, 0, 1));
-        } /*else {
-            updateSelectedList(Collections.emptyList());
-        }*/
+        }
     }
 
     @Inject(method = "swing", at = @At("HEAD"), cancellable = true)
@@ -213,11 +208,6 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
     @Override
     public boolean isEditing() {
         return editing;
-    }
-
-    @Override
-    public void setSelecting(boolean selecting) {
-        this.selecting = selecting;
     }
 
     @Override

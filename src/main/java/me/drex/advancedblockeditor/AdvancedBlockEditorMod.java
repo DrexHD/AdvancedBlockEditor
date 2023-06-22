@@ -38,10 +38,6 @@ public class AdvancedBlockEditorMod implements DedicatedServerModInitializer {
 
     public static final String MOD_ID = "advanced-block-editor";
 
-    public static ResourceLocation resource(String id) {
-        return new ResourceLocation(MOD_ID, id);
-    }
-
     @Override
     public void onInitializeServer() {
         CommandRegistrationCallback.EVENT.register((dispatcher, commandBuildContext, commandSelection) -> {

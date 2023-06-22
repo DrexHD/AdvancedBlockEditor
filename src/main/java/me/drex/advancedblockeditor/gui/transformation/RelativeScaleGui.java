@@ -110,40 +110,12 @@ public class RelativeScaleGui extends BaseGui {
 
             Vector3f scale = transformation.getScale();
 
-            // TODO: remove
-            // /advancedblockeditor scale -1358 68 -3120 -1355 72 -3120 0.125
-            /*if (this.currentAxis.axis != null) {
-                blockDisplay.setPos(
-                        pos.x + (diff.x * this.currentAxis.axis.choose(v, 0, 0)),
-                        pos.y + (diff.y * this.currentAxis.axis.choose(0, v, 0)),
-                        pos.z + (diff.z * this.currentAxis.axis.choose(0, 0, v))
-                );
-            } else {
-                double xDiff = diff.x + (diff.x * this.playerLookingDirection.getStepX() * v);
-                double yDiff = diff.y + (diff.y * this.playerLookingDirection.getStepY() * v);
-                double zDiff = diff.z + (diff.z * this.playerLookingDirection.getStepZ() * v);
-
-                blockDisplay.setPos(
-                        pos.add(xDiff, yDiff, zDiff)
-                );
-            }*/
-
             blockDisplay.setPos(
                     origin.add(diff.multiply(v, v, v))
             );
             scale.x *= v;
             scale.y *= v;
             scale.z *= v;
-
-            /*if (this.currentAxis.axis != null) {
-                scale.x += this.currentAxis.axis.choose(v, 0, 0);
-                scale.y += this.currentAxis.axis.choose(0, v, 0);
-                scale.z += this.currentAxis.axis.choose(0, 0, v);
-            } else {
-                scale.x += this.playerLookingDirection.getStepX() * 2;
-                scale.y += this.playerLookingDirection.getStepY() * 2;
-                scale.z += this.playerLookingDirection.getStepZ() * 2;
-            }*/
 
             ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(
                     transformation.getTranslation(),

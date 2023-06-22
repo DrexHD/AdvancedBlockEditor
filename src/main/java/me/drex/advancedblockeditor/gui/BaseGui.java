@@ -43,7 +43,6 @@ public abstract class BaseGui extends HotbarGui {
                 })
         );
 
-        // TODO: is this just to show player armor?
         this.setSlot(37, this.player.getItemBySlot(EquipmentSlot.HEAD).copy());
         this.setSlot(38, this.player.getItemBySlot(EquipmentSlot.CHEST).copy());
         this.setSlot(39, this.player.getItemBySlot(EquipmentSlot.LEGS).copy());
@@ -76,8 +75,6 @@ public abstract class BaseGui extends HotbarGui {
             var delta = slot - current;
             setting.updateValue(delta);
             this.playSound(SoundEvents.NOTE_BLOCK_HAT, 0.5f, 1f);
-            // TODO: remove (?)
-            //this.player.connection.send(new ClientboundSetCarriedItemPacket(this.selectedSlot));
             this.setSelectedSlot(4);
             this.buildUi();
             return false;
