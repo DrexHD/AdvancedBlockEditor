@@ -41,7 +41,7 @@ public final class EditingContext {
     public Setting move = new Setting(0, -10, 10, input -> Math.pow(2, input));
     private boolean placeholdersDirty = true;
     private Map<String, Component> placeholders = null;
-    private Direction playerLookingDirection;
+    public Direction playerLookingDirection;
 
     public EditingContext(ServerPlayer player, List<Display.BlockDisplay> blockDisplays) {
         assert !blockDisplays.isEmpty();
@@ -105,6 +105,19 @@ public final class EditingContext {
             Vector3f rotationVector = axisAngleQuaternion.getEulerAnglesXYZ(new Vector3f());;
             int brightnessOverride = ((DisplayAccessor)originDisplay).invokeGetPackedBrightnessOverride();
             Brightness brightness = brightnessOverride != -1 ? Brightness.unpack(brightnessOverride) : null;
+
+            Vector3f min = originDisplay.position().toVector3f();
+            Vector3f max = originDisplay.position().toVector3f();
+            for (Display.BlockDisplay blockDisplay : blockDisplays) {
+                Transformation t = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData());
+                Vector3f scale = t.getScale();
+                blockDisplay.position().toVector3f().min(min, min);
+                blockDisplay.position().toVector3f().max(max, max);
+                blockDisplay.position().toVector3f().add(scale).min(min, min);
+                blockDisplay.position().toVector3f().add(scale).max(max, max);
+            }
+            Vector3f size = max.sub(min);
+
             this.placeholders = mergePlaceholders(
                     new HashMap<>() {{
                         put("relative_scale_delta_inverse", doubleD(100 * (1 - (1 / relativeScaleDelta()))));
@@ -123,7 +136,7 @@ public final class EditingContext {
                     quaternionF("right_rotation", transformation.getRightRotation()),
                     vector3f("rotation", rotationVector.mul((float) RADIANS_TO_DEGREES)),
                     vector3f("pos", originDisplay.position().toVector3f()),
-                    vector3f("scale", transformation.getScale()),
+                    vector3f("scale", size),
                     vector3f("translation", transformation.getTranslation())
             );
             placeholdersDirty = false;

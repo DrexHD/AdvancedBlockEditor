@@ -8,19 +8,23 @@ import me.drex.advancedblockeditor.mixin.DisplayAccessor;
 import me.drex.advancedblockeditor.mixin.EntityAccessor;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Display;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Locale;
+import java.util.function.Function;
 
 import static me.drex.advancedblockeditor.util.TextUtils.*;
 
 public class ScaleGui extends BaseGui {
 
-    private CurrentAxis currentAxis = CurrentAxis.LOOK;
-    private Direction playerLookingDirection;
+    private static final ScaleAxis[] AXES = ScaleAxis.values();
+
+    private ScaleAxis currentAxis = ScaleAxis.ALL;
+    protected Direction playerLookingDirection;
 
     public ScaleGui(EditingContext context, int slot) {
         super(context, slot);
@@ -32,7 +36,7 @@ public class ScaleGui extends BaseGui {
 
     @Override
     public void onTick() {
-        if (this.currentAxis.axis == null) {
+        if (this.currentAxis.axisSupplier == null) {
             var vec = this.player.getViewVector(0);
             var dir = Direction.getNearest(vec.x, vec.y, vec.z);
             if (dir != this.playerLookingDirection) {
@@ -46,29 +50,17 @@ public class ScaleGui extends BaseGui {
 
     @Override
     protected void buildUi() {
-        var wool = switch (this.currentAxis) {
-            //case ALL -> Items.BLACK_WOOL;
-            case LOOK -> Items.WHITE_WOOL;
-            case X -> Items.RED_WOOL;
-            case Y -> Items.GREEN_WOOL;
-            case Z -> Items.BLUE_WOOL;
-        };
-
-        this.setSlot(0, baseElement(wool, gui("action.scale." + this.currentAxis.name().toLowerCase(Locale.ROOT), context)).setCallback((x, y, z, c) -> {
+        this.setSlot(0, baseElement(currentAxis.display, gui("action.scale." + this.currentAxis.name().toLowerCase(Locale.ROOT), context)).setCallback((x, y, z, c) -> {
                     this.playClickSound();
-                    // TODO -1 % 3 is not 2 (?)
-                    this.currentAxis = CurrentAxis.values()[(this.currentAxis.ordinal() + CurrentAxis.values().length + (y.isRight ? 1 : y.isLeft ? -1 : 0)) % CurrentAxis.values().length];
+                    this.currentAxis = AXES[(currentAxis.ordinal() + AXES.length + (y.isRight ? 1 : y.isLeft ? -1 : 0)) % AXES.length];
                     this.buildUi();
                 })
         );
         this.setSlot(1, baseElement(Items.RED_CONCRETE, gui("action.scale.negative", context))
-                .setCallback(() -> this.scale(-context.scaleDelta()))
+                .setCallback(() -> this.scale(true))
         );
         this.setSlot(2, baseElement(Items.LIME_CONCRETE, gui("action.scale.positive", context))
-                .setCallback(() -> this.scale(context.scaleDelta()))
-        );
-        this.setSlot(4, baseElement(Items.WITHER_ROSE, gui("action.scale.reset", context))
-                .setCallback(this::reset)
+                .setCallback(() -> this.scale(false))
         );
     }
 
@@ -77,48 +69,49 @@ public class ScaleGui extends BaseGui {
         return context.scale;
     }
 
-    private void reset() {
-        for (Display.BlockDisplay blockDisplay : this.context.blockDisplays) {
+
+    private void scale(boolean negative) {
+        Vector3f min = context.originDisplay.position().toVector3f();
+        Vector3f max = context.originDisplay.position().toVector3f();
+        for (Display.BlockDisplay blockDisplay : context.blockDisplays) {
             Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData());
-            ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(
-                    transformation.getTranslation(),
-                    transformation.getLeftRotation(),
-                    null,
-                    transformation.getRightRotation()
-            ));
+            Vector3f scale = transformation.getScale();
+            blockDisplay.position().toVector3f().min(min, min);
+            blockDisplay.position().toVector3f().max(max, max);
+            blockDisplay.position().toVector3f().add(scale).min(min, min);
+            blockDisplay.position().toVector3f().add(scale).max(max, max);
         }
-    }
+        Vector3f size = max.sub(min);
+        Vector3f direction = currentAxis.axisSupplier.apply(context);
+        direction.mul((float) context.scaleDelta());
+        if (negative) direction.mul(-1);
+        Vector3f factor = size.add(direction, new Vector3f()).div(size);
+        if (factor.x == 0 || factor.y == 0 || factor.z == 0) {
+            playFailSound();
+            return;
+        }
 
-    private void scale(double v) {
+        Vec3 origin = context.originDisplay.position();
         for (Display.BlockDisplay blockDisplay : this.context.blockDisplays) {
-            if (this.currentAxis.axis != null) {
-                updateScale(blockDisplay, Direction.fromAxisAndDirection(this.currentAxis.axis, Direction.AxisDirection.POSITIVE), v);
-            } else {
-                updateScale(blockDisplay, playerLookingDirection, v);
-            }
-        }
-        buildUi();
-    }
-
-    private void updateScale(Display.BlockDisplay blockDisplay, Direction lookingDirection, double v) {
-        Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData());
-
-        Vector3f oldScale = transformation.getScale();
-        Vec3 scaleChangeVector = Vec3.atLowerCornerOf(lookingDirection.getNormal()).multiply(v, v, v);
-        if (lookingDirection.getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
             Vec3 pos = blockDisplay.position();
+            Vec3 diff = pos.subtract(origin);
+
+            Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData());
+
+            Vector3f scale = transformation.getScale();
+
             blockDisplay.setPos(
-                    pos.add(scaleChangeVector)
+                origin.add(diff.multiply(new Vec3(factor)))
             );
-            scaleChangeVector = scaleChangeVector.multiply(-1, -1, -1);
-        }
-        oldScale.add(scaleChangeVector.toVector3f());
-        ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(
+            scale.mul(factor);
+
+            ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(
                 transformation.getTranslation(),
                 transformation.getLeftRotation(),
-                oldScale,
+                scale,
                 transformation.getRightRotation()
-        ));
+            ));
+        }
     }
 
     @Override
@@ -126,16 +119,23 @@ public class ScaleGui extends BaseGui {
         return new SwitchEntry(ScaleGui::new, this.getSelectedSlot());
     }
 
-    enum CurrentAxis {
-        LOOK(null),
-        X(Direction.Axis.X),
-        Y(Direction.Axis.Y),
-        Z(Direction.Axis.Z);
+    enum ScaleAxis {
+        ALL(Items.ORANGE_WOOL, (context) -> new Vector3f(1, 1, 1)),
+        LOOK(Items.WHITE_WOOL, (context) -> context.playerLookingDirection.step()),
+        X(Items.RED_WOOL, Direction.Axis.X),
+        Y(Items.GREEN_WOOL, Direction.Axis.Y),
+        Z(Items.BLUE_WOOL, Direction.Axis.Z);
 
-        private final Direction.Axis axis;
+        private final Item display;
+        private final Function<EditingContext, Vector3f> axisSupplier;
 
-        CurrentAxis(Direction.Axis axis) {
-            this.axis = axis;
+        ScaleAxis(Item display, Direction.Axis axisSupplier) {
+            this(display, context -> Direction.fromAxisAndDirection(axisSupplier, Direction.AxisDirection.POSITIVE).step());
+        }
+
+        ScaleAxis(Item display, Function<EditingContext, Vector3f> axisSupplier) {
+            this.display = display;
+            this.axisSupplier = axisSupplier;
         }
     }
 

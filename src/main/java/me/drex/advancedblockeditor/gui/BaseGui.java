@@ -5,6 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.HotbarGui;
 import me.drex.advancedblockeditor.util.TextUtils;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.sounds.SoundEvent;
@@ -106,6 +107,10 @@ public abstract class BaseGui extends HotbarGui {
 
     protected void playClickSound() {
         this.playSound(SoundEvents.UI_BUTTON_CLICK, 0.5f, 1f);
+    }
+
+    protected void playFailSound() {
+        this.playSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.VILLAGER_NO), 0.5f, 1f);
     }
 
     @Override
