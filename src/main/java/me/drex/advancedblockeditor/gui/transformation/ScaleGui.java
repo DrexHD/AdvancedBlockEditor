@@ -62,10 +62,10 @@ public class ScaleGui extends BaseGui {
                 })
         );
         this.setSlot(1, baseElement(Items.RED_CONCRETE, gui("action.scale.negative", context))
-                .setCallback(() -> this.scale(-context.scale.getResult()))
+                .setCallback(() -> this.scale(-context.scaleDelta()))
         );
         this.setSlot(2, baseElement(Items.LIME_CONCRETE, gui("action.scale.positive", context))
-                .setCallback(() -> this.scale(context.scale.getResult()))
+                .setCallback(() -> this.scale(context.scaleDelta()))
         );
         this.setSlot(4, baseElement(Items.WITHER_ROSE, gui("action.scale.reset", context))
                 .setCallback(this::reset)

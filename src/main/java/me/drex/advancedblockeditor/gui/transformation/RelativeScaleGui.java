@@ -76,22 +76,6 @@ public class RelativeScaleGui extends BaseGui {
         );
     }
 
-    /*@Override
-    public boolean onSelectedSlotChange(int slot) {
-        if (this.player.isShiftKeyDown()) {
-            var current = this.getSelectedSlot();
-
-            var delta = slot - current;
-            this.context.relativeScaleDelta = Mth.clamp(context.relativeScaleDelta + delta, -7, 0);
-            this.playSound(SoundEvents.NOTE_BLOCK_HAT, 0.5f, 1f);
-            this.player.connection.send(new ClientboundSetCarriedItemPacket(this.selectedSlot));
-            this.buildUi();
-            return false;
-        }
-
-        return super.onSelectedSlotChange(slot);
-    }*/
-
     @Override
     protected @Nullable Setting changeStuff() {
         return context.relativeScale;

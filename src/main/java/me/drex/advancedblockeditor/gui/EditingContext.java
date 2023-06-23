@@ -55,6 +55,10 @@ public final class EditingContext {
         this(player, Collections.singletonList(originDisplay));
     }
 
+    public double scaleDelta() {
+        return scale.getResult();
+    }
+
     public double relativeScaleDelta() {
         return relativeScale.getResult();
     }
