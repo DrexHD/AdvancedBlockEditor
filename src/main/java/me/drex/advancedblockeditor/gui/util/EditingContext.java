@@ -1,6 +1,7 @@
-package me.drex.advancedblockeditor.gui;
+package me.drex.advancedblockeditor.gui.util;
 
 import com.mojang.math.Transformation;
+import me.drex.advancedblockeditor.gui.BaseGui;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
 import me.drex.advancedblockeditor.mixin.EntityAccessor;
 import me.drex.advancedblockeditor.util.interfaces.EditingPlayer;
@@ -126,9 +127,6 @@ public final class EditingContext {
                         put("scale_delta", doubleD(scale.getResult()));
                         put("move_delta", doubleD(moveDelta()));
                         put("move_delta_half", doubleD(moveDelta() / 2));
-//                        put("rotation_x", doubleD(Math.toDegrees(rotationVector.x)));
-//                        put("rotation_y", doubleD(Math.toDegrees(rotationVector.y)));
-//                        put("rotation_z", doubleD(Math.toDegrees(rotationVector.z)));
                         put("count", integer(blockDisplays.size()));
                     }},
                     brightness("brightness", brightness),

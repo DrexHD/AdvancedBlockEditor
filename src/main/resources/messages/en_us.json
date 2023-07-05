@@ -18,17 +18,9 @@
   "gui.advanced_block_editor.action.scale.y": "Scale along Y axis",
   "gui.advanced_block_editor.action.scale.z": "Scale along Z axis",
   "gui.advanced_block_editor.action.scale.look": "Scale forward",
+  "gui.advanced_block_editor.action.scale.all": "Scale all Axis",
   "gui.advanced_block_editor.action.scale.positive": "<green>Increase scale by <bold>${scale_delta}</bold> blocks",
   "gui.advanced_block_editor.action.scale.negative": "<red>Decrease scale by <bold>${scale_delta}</bold> blocks",
-  "gui.advanced_block_editor.action.scale.reset": "<white>Reset scale",
-
-  "gui.advanced_block_editor.action.relative_scale.positive": "<green>Scale <bold>+${relative_scale_delta}%</bold>",
-  "gui.advanced_block_editor.action.relative_scale.negative": "<red>Scale <bold>-${relative_scale_delta_inverse}%</bold>",
-
-  "gui.advanced_block_editor.action.rotation_ypr.x": "<red>Pitch axis",
-  "gui.advanced_block_editor.action.rotation_ypr.y": "<green>Yaw axis",
-  "gui.advanced_block_editor.action.rotation_ypr.z": "<blue>Roll axis",
-  "gui.advanced_block_editor.action.rotation_ypr.reset": "<white>Reset rotation",
 
   "gui.advanced_block_editor.action.rotation.x": "<red>Rotate local X",
   "gui.advanced_block_editor.action.rotation.y": "<green>Rotate local Y",
@@ -53,7 +45,7 @@
   "text.advanced_block_editor.actionbar.light": "Current light: <yellow>Block: ${brightness_block}<gray>, <aqua>Sky: ${brightness_sky}",
   "text.advanced_block_editor.actionbar.move": "Current position: <red>${pos_x} <gray>/ <green>${pos_y} <gray>/ <blue>${pos_z} <dark_gray>| <white>Distance: <gold>${move_delta}",
   "text.advanced_block_editor.actionbar.rotation": "Current rotation: <red>${rotation_x}° <gray>/ <green>${rotation_y}° <gray>/ <blue>${rotation_z}° <dark_gray>| <white>Rotation: <gold>${rotation_delta}°",
-  "text.advanced_block_editor.actionbar.main": "<gold>${count} <white>blocks selected",
+  "text.advanced_block_editor.actionbar.main": "<gold>${count} <white>block(s) selected",
   "text.advanced_block_editor.item.template": "<light_purple>${block} (Template)",
 
   "text.advanced_block_editor.direction.south": "<blue>South",

@@ -2,8 +2,7 @@ package me.drex.advancedblockeditor.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import me.drex.advancedblockeditor.AdvancedBlockEditorMod;
-import me.drex.advancedblockeditor.gui.transformation.RotationGui;
-import me.drex.advancedblockeditor.gui.transformation.ScaleGui;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
 import me.drex.advancedblockeditor.mixin.BlockDisplayAccessor;
 import me.drex.advancedblockeditor.util.TextUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -51,6 +50,7 @@ public class MainGui extends BaseGui {
                         ((BlockDisplayAccessor) blockDisplay).invokeAddAdditionalSaveData(tag);
                         AdvancedBlockEditorMod.creatBlockDisplay(player.serverLevel(), tag, blockDisplay.position());
                     }
+                    playClickSound();
                 })
         );
 

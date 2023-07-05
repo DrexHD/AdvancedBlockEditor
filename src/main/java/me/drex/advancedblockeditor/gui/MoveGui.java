@@ -1,6 +1,7 @@
 package me.drex.advancedblockeditor.gui;
 
-import me.drex.advancedblockeditor.util.TextUtils;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
+import me.drex.advancedblockeditor.gui.util.Setting;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.item.Items;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
+import static me.drex.advancedblockeditor.util.TextUtils.gui;
 import static me.drex.advancedblockeditor.util.TextUtils.text;
 
 public class MoveGui extends BaseGui {
@@ -47,7 +49,7 @@ public class MoveGui extends BaseGui {
             case Z -> Items.BLUE_WOOL;
         };
 
-        this.setSlot(0, baseElement(wool, TextUtils.gui("action.move." + this.currentAxis.name().toLowerCase(Locale.ROOT), context)).setCallback((x, y, z, c) -> {
+        this.setSlot(0, baseElement(wool, gui("action.move." + this.currentAxis.name().toLowerCase(Locale.ROOT), context)).setCallback((x, y, z, c) -> {
                     if (this.player.isShiftKeyDown()) {
                         return;
                     }
@@ -58,25 +60,25 @@ public class MoveGui extends BaseGui {
         );
 
 
-        this.setSlot(1, baseElement(Items.RED_DYE, TextUtils.gui("action.move.negative.half", context))
+        this.setSlot(1, baseElement(Items.RED_DYE, gui("action.move.negative.half", context))
                 .setCallback((x, y, z, c) -> {
                     this.move(-context.moveDelta() * 0.5);
                 })
         );
 
-        this.setSlot(2, baseElement(Items.RED_CONCRETE, TextUtils.gui("action.move.negative.full", context))
+        this.setSlot(2, baseElement(Items.RED_CONCRETE, gui("action.move.negative.full", context))
                 .setCallback((x, y, z, c) -> {
                     this.move(-context.moveDelta());
                 })
         );
 
-        this.setSlot(4, baseElement(Items.LIME_CONCRETE, TextUtils.gui("action.move.positive.full", context))
+        this.setSlot(4, baseElement(Items.LIME_CONCRETE, gui("action.move.positive.full", context))
                 .setCallback((x, y, z, c) -> {
                     this.move(context.moveDelta());
                 })
         );
 
-        this.setSlot(5, baseElement(Items.LIME_DYE, TextUtils.gui("action.move.positive.half", context))
+        this.setSlot(5, baseElement(Items.LIME_DYE, gui("action.move.positive.half", context))
                 .setCallback((x, y, z, c) -> {
                     this.move(context.moveDelta() * 0.5);
                 })
@@ -84,7 +86,7 @@ public class MoveGui extends BaseGui {
     }
 
     @Override
-    protected @Nullable Setting changeStuff() {
+    protected @Nullable Setting getSetting() {
         return context.move;
     }
 

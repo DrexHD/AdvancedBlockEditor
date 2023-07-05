@@ -3,6 +3,8 @@ package me.drex.advancedblockeditor.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.HotbarGui;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
+import me.drex.advancedblockeditor.gui.util.Setting;
 import me.drex.advancedblockeditor.util.TextUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,7 +33,7 @@ public abstract class BaseGui extends HotbarGui {
             this.clearSlot(i);
         }
         this.buildUi();
-        this.setSlot(8, new GuiElementBuilder(Items.BARRIER)
+        this.setSlot(8, new GuiElementBuilder(Items.SPRUCE_DOOR)
                 .setName(TextUtils.gui(context.interfaceList.isEmpty() ? "close" : "back", context))
                 .hideFlags()
                 .setCallback((x, y, z, c) -> {
@@ -70,7 +72,7 @@ public abstract class BaseGui extends HotbarGui {
 
     @Override
     public boolean onSelectedSlotChange(int slot) {
-        Setting setting = changeStuff();
+        Setting setting = getSetting();
         if (this.player.isShiftKeyDown() && setting != null) {
             var current = this.getSelectedSlot();
             var delta = slot - current;
@@ -85,7 +87,7 @@ public abstract class BaseGui extends HotbarGui {
     }
 
     @Nullable
-    protected Setting changeStuff() {
+    protected Setting getSetting() {
         return null;
     }
 

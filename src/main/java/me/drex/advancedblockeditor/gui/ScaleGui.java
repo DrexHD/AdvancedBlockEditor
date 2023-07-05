@@ -1,9 +1,8 @@
-package me.drex.advancedblockeditor.gui.transformation;
+package me.drex.advancedblockeditor.gui;
 
 import com.mojang.math.Transformation;
-import me.drex.advancedblockeditor.gui.BaseGui;
-import me.drex.advancedblockeditor.gui.Setting;
-import me.drex.advancedblockeditor.gui.EditingContext;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
+import me.drex.advancedblockeditor.gui.util.Setting;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
 import me.drex.advancedblockeditor.mixin.EntityAccessor;
 import net.minecraft.core.Direction;
@@ -17,33 +16,23 @@ import org.joml.Vector3f;
 import java.util.Locale;
 import java.util.function.Function;
 
-import static me.drex.advancedblockeditor.util.TextUtils.*;
+import static me.drex.advancedblockeditor.util.TextUtils.gui;
+import static me.drex.advancedblockeditor.util.TextUtils.text;
 
 public class ScaleGui extends BaseGui {
 
     private static final ScaleAxis[] AXES = ScaleAxis.values();
 
     private ScaleAxis currentAxis = ScaleAxis.ALL;
-    protected Direction playerLookingDirection;
 
     public ScaleGui(EditingContext context, int slot) {
         super(context, slot);
-        var vec = this.player.getViewVector(0);
-        this.playerLookingDirection = Direction.getNearest(vec.x, vec.y, vec.z);
         this.rebuildUi();
         this.open();
     }
 
     @Override
     public void onTick() {
-        if (this.currentAxis.axisSupplier == null) {
-            var vec = this.player.getViewVector(0);
-            var dir = Direction.getNearest(vec.x, vec.y, vec.z);
-            if (dir != this.playerLookingDirection) {
-                this.playerLookingDirection = dir;
-                this.rebuildUi();
-            }
-        }
         super.onTick();
         context.player.sendSystemMessage(text("actionbar.scale", context), true);
     }
@@ -65,7 +54,7 @@ public class ScaleGui extends BaseGui {
     }
 
     @Override
-    protected @Nullable Setting changeStuff() {
+    protected @Nullable Setting getSetting() {
         return context.scale;
     }
 
@@ -121,7 +110,7 @@ public class ScaleGui extends BaseGui {
 
     enum ScaleAxis {
         ALL(Items.ORANGE_WOOL, (context) -> new Vector3f(1, 1, 1)),
-        LOOK(Items.WHITE_WOOL, (context) -> context.playerLookingDirection.step()),
+        LOOK(Items.WHITE_WOOL, (context) -> context.playerLookingDirection.step().absolute()),
         X(Items.RED_WOOL, Direction.Axis.X),
         Y(Items.GREEN_WOOL, Direction.Axis.Y),
         Z(Items.BLUE_WOOL, Direction.Axis.Z);

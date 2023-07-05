@@ -1,8 +1,8 @@
 package me.drex.advancedblockeditor;
 
 import me.drex.advancedblockeditor.command.AdvancedBlockEditorCommand;
-import me.drex.advancedblockeditor.gui.EditingContext;
 import me.drex.advancedblockeditor.gui.MainGui;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
 import me.drex.advancedblockeditor.mixin.BlockDisplayAccessor;
 import me.drex.advancedblockeditor.util.BlockDisplaySelector;
 import me.drex.advancedblockeditor.util.interfaces.EditingPlayer;
@@ -13,7 +13,6 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -35,8 +34,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class AdvancedBlockEditorMod implements DedicatedServerModInitializer {
-
-    public static final String MOD_ID = "advanced-block-editor";
 
     @Override
     public void onInitializeServer() {
@@ -72,28 +69,22 @@ public class AdvancedBlockEditorMod implements DedicatedServerModInitializer {
             if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.PASS;
             ItemStack itemStack = player.getItemInHand(hand);
 
-            CompoundTag tag = itemStack.getTagElement("advanced_block_editor");
-            if (tag != null) {
-                creatBlockDisplay(serverLevel, tag, hitResult.getBlockPos().relative(hitResult.getDirection()));
-                return InteractionResult.SUCCESS;
-            } else {
-                if (player instanceof ServerPlayer serverPlayer) {
-                    if (((EditingPlayer) serverPlayer).isEditing()
-                            || ((EditingPlayer) serverPlayer).isSelecting()) return InteractionResult.PASS;
-                    if (itemStack.getItem() == Items.PRISMARINE_SHARD) {
-                        BlockPos blockPos = hitResult.getBlockPos();
-                        BlockState blockState = level.getBlockState(blockPos);
-                        if (blockState.isAir()) return InteractionResult.PASS;
-                        serverLevel.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
-                        Display.BlockDisplay blockDisplay = creatBlockDisplay(serverLevel, blockState, blockPos);
-                        new MainGui(new EditingContext(serverPlayer, blockDisplay), 7);
-                        return InteractionResult.SUCCESS;
-                    } else if (itemStack.getItem() == Items.PRISMARINE_CRYSTALS) {
-                        ((EditingPlayer) player).setPos1(getSelectLocation(player));
-                    }
+            if (player instanceof ServerPlayer serverPlayer) {
+                if (((EditingPlayer) serverPlayer).isEditing()
+                        || ((EditingPlayer) serverPlayer).isSelecting()) return InteractionResult.PASS;
+                if (itemStack.getItem() == Items.PRISMARINE_SHARD) {
+                    BlockPos blockPos = hitResult.getBlockPos();
+                    BlockState blockState = level.getBlockState(blockPos);
+                    if (blockState.isAir()) return InteractionResult.PASS;
+                    serverLevel.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 2);
+                    Display.BlockDisplay blockDisplay = creatBlockDisplay(serverLevel, blockState, blockPos);
+                    new MainGui(new EditingContext(serverPlayer, blockDisplay), 7);
+                    return InteractionResult.SUCCESS;
+                } else if (itemStack.getItem() == Items.PRISMARINE_CRYSTALS) {
+                    ((EditingPlayer) player).setPos1(getSelectLocation(player));
                 }
-                return InteractionResult.PASS;
             }
+            return InteractionResult.PASS;
         });
         PlayerBlockBreakEvents.BEFORE.register((world, player1, pos, state, blockEntity) -> {
             if (player1.getMainHandItem().getItem() == Items.PRISMARINE_CRYSTALS) {
@@ -137,8 +128,6 @@ public class AdvancedBlockEditorMod implements DedicatedServerModInitializer {
             blockDisplay.moveTo(pos);
             if (tag != null) {
                 ((BlockDisplayAccessor) blockDisplay).invokeReadAdditionalSaveData(tag);
-            } else {
-                //((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(new Vector3f(-0.5f, -0.5f, -0.5f), null, null, null));
             }
         }, BlockPos.containing(pos), MobSpawnType.COMMAND, false, false);
     }

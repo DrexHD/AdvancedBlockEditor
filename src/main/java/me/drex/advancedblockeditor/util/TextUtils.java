@@ -1,9 +1,8 @@
 package me.drex.advancedblockeditor.util;
 
 import eu.pb4.placeholders.api.PlaceholderContext;
-import me.drex.advancedblockeditor.gui.EditingContext;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
 import me.drex.message.api.Message;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -28,11 +27,6 @@ public class TextUtils {
 
     public static MutableComponent text(String path, EditingContext context) {
         return Message.message("text.advanced_block_editor." + path, context.placeholders(), PlaceholderContext.of(context.originDisplay));
-    }
-
-
-    public static MutableComponent direction(Direction from) {
-        return Message.message("text.advanced_block_editor.direction." + from.getName());
     }
 
     public static MutableComponent integer(Integer integer) {

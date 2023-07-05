@@ -1,4 +1,4 @@
-package me.drex.advancedblockeditor.gui;
+package me.drex.advancedblockeditor.gui.util;
 
 import net.minecraft.util.Mth;
 

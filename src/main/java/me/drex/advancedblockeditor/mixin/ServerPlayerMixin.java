@@ -2,8 +2,8 @@ package me.drex.advancedblockeditor.mixin;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.math.Transformation;
-import me.drex.advancedblockeditor.gui.EditingContext;
 import me.drex.advancedblockeditor.gui.MainGui;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
 import me.drex.advancedblockeditor.util.BlockDisplaySelector;
 import me.drex.advancedblockeditor.util.interfaces.EditingPlayer;
 import net.minecraft.core.BlockPos;
@@ -35,6 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static me.drex.advancedblockeditor.AdvancedBlockEditorMod.getSelectLocation;
 
@@ -44,10 +45,11 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
     @Shadow
     public ServerGamePacketListenerImpl connection;
 
-    @Shadow public abstract ServerLevel serverLevel();
+    @Shadow
+    public abstract ServerLevel serverLevel();
 
     @Unique
-    private final List<Display.BlockDisplay> lastSelectedList = new ArrayList<>();
+    private final List<UUID> selectedBlockDisplays = new ArrayList<>();
 
     @Unique
     private boolean editing = false;
@@ -55,32 +57,12 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
     @Unique
     private boolean selecting = false;
 
-    @Override
-    public void setPos1(@Nullable Vec3 pos1) {
-        this.pos1 = pos1;
-        if (pos1 != null) updateSelectedList(getSelectedList());
-    }
-
-    @Override
-    public void setPos2(@Nullable Vec3 pos2) {
-        this.pos2 = pos2;
-        if (pos2 != null) updateSelectedList(getSelectedList());
-    }
-
-    @Override
-    public @Nullable Vec3 getPos1() {
-        return this.pos1;
-    }
-
-    @Override
-    public @Nullable Vec3 getPos2() {
-        return this.pos2;
-    }
-
     @Nullable
+    @Unique
     private Vec3 pos1 = null;
 
     @Nullable
+    @Unique
     private Vec3 pos2 = null;
 
     public ServerPlayerMixin(Level level, BlockPos blockPos, float f, GameProfile gameProfile) {
@@ -94,13 +76,12 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
         for (Entity entity : serverLevel().getAllEntities()) {
             if (entity instanceof Display.BlockDisplay blockDisplay) {
                 Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData());
-                VoxelShape voxelShape = ((BlockDisplayAccessor)blockDisplay).invokeGetBlockState().getShape(level(), BlockPos.ZERO);
+                VoxelShape voxelShape = ((BlockDisplayAccessor) blockDisplay).invokeGetBlockState().getShape(level(), BlockPos.ZERO);
                 if (voxelShape.isEmpty()) continue;
                 AABB bounds = voxelShape.bounds();
                 Vector3f min = new Vector3f();
                 Vector3f max = new Vector3f();
                 transformation.getMatrix().transformAab((float) bounds.minX, (float) bounds.minY, (float) bounds.minZ, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.maxZ, min, max);
-                //selectionArea.contains(new Vec3(bounds.minX, bounds.minY, bounds.minZ).add(blockDisplay.position())) && selectionArea.contains(new Vec3(bounds.maxX, bounds.maxY, bounds.maxZ).add(blockDisplay.position()))
                 AABB transformedBounds = new AABB(new Vec3(min), new Vec3(max));
                 if (selectionArea.contains(transformedBounds.getCenter().add(blockDisplay.position()))) {
                     result.add(blockDisplay);
@@ -111,12 +92,14 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
     }
 
     private void updateSelectedList(List<Display.BlockDisplay> updatedList) {
-        for (Display.BlockDisplay blockDisplay : lastSelectedList) {
-            ((EntityAccessor) blockDisplay).invokeSetSharedFlag(Entity.FLAG_GLOWING, false);
+        for (UUID uuid : selectedBlockDisplays) {
+            if (serverLevel().getEntity(uuid) instanceof EntityAccessor accessor) {
+                accessor.invokeSetSharedFlag(Entity.FLAG_GLOWING, false);
+            }
         }
-        lastSelectedList.clear();
-        lastSelectedList.addAll(updatedList);
-        for (Display.BlockDisplay blockDisplay : lastSelectedList) {
+        selectedBlockDisplays.clear();
+        for (Display.BlockDisplay blockDisplay : updatedList) {
+            selectedBlockDisplays.add(blockDisplay.getUUID());
             ((EntityAccessor) blockDisplay).invokeSetSharedFlag(Entity.FLAG_GLOWING, true);
 
         }
@@ -165,22 +148,21 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
     }
 
     private boolean select() {
-        AABB selectionArea = new AABB(this.getPos1(), this.getPos2());
+        if (pos1 == null || pos2 == null) return false;
+        AABB selectionArea = new AABB(pos1, pos2);
         this.setPos1(null);
         this.setPos2(null);
-        //AABB selectionArea = new AABB(Vec3Argument.getVec3(context, "from"), Vec3Argument.getVec3(context, "to"));
         ServerLevel level = this.serverLevel();
         List<Display.BlockDisplay> blockDisplays = new ArrayList<>();
         for (Entity entity : level.getAllEntities()) {
             if (entity instanceof Display.BlockDisplay blockDisplay) {
                 Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData());
-                VoxelShape voxelShape = ((BlockDisplayAccessor)blockDisplay).invokeGetBlockState().getShape(level, BlockPos.ZERO);
+                VoxelShape voxelShape = ((BlockDisplayAccessor) blockDisplay).invokeGetBlockState().getShape(level, BlockPos.ZERO);
                 if (voxelShape.isEmpty()) continue;
                 AABB bounds = voxelShape.bounds();
                 Vector3f min = new Vector3f();
                 Vector3f max = new Vector3f();
                 transformation.getMatrix().transformAab((float) bounds.minX, (float) bounds.minY, (float) bounds.minZ, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.maxZ, min, max);
-                //selectionArea.contains(new Vec3(bounds.minX, bounds.minY, bounds.minZ).add(blockDisplay.position())) && selectionArea.contains(new Vec3(bounds.maxX, bounds.maxY, bounds.maxZ).add(blockDisplay.position()))
                 AABB transformedBounds = new AABB(new Vec3(min), new Vec3(max));
                 if (selectionArea.contains(transformedBounds.getCenter().add(blockDisplay.position()))) {
                     blockDisplays.add(blockDisplay);
@@ -214,4 +196,17 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
     public boolean isSelecting() {
         return selecting;
     }
+
+    @Override
+    public void setPos1(@Nullable Vec3 pos1) {
+        this.pos1 = pos1;
+        if (pos1 != null) updateSelectedList(getSelectedList());
+    }
+
+    @Override
+    public void setPos2(@Nullable Vec3 pos2) {
+        this.pos2 = pos2;
+        if (pos2 != null) updateSelectedList(getSelectedList());
+    }
+
 }

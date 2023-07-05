@@ -1,9 +1,8 @@
-package me.drex.advancedblockeditor.gui.transformation;
+package me.drex.advancedblockeditor.gui;
 
 import com.mojang.math.Transformation;
-import me.drex.advancedblockeditor.gui.BaseGui;
-import me.drex.advancedblockeditor.gui.Setting;
-import me.drex.advancedblockeditor.gui.EditingContext;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
+import me.drex.advancedblockeditor.gui.util.Setting;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
 import me.drex.advancedblockeditor.mixin.EntityAccessor;
 import net.minecraft.core.Direction;
@@ -45,7 +44,7 @@ public class RotationGui extends BaseGui {
     }
 
     @Override
-    protected @Nullable Setting changeStuff() {
+    protected @Nullable Setting getSetting() {
         return context.rotation;
     }
 

@@ -1,6 +1,7 @@
 package me.drex.advancedblockeditor.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
+import me.drex.advancedblockeditor.gui.util.EditingContext;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
 import net.minecraft.util.Brightness;
 import net.minecraft.util.Mth;

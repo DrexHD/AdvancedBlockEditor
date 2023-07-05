@@ -14,8 +14,4 @@ public interface EditingPlayer {
 
     void setPos2(Vec3 pos2);
 
-    Vec3 getPos1();
-
-    Vec3 getPos2();
-
 }
