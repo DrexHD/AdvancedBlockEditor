@@ -1,5 +1,6 @@
 package me.drex.advancedblockeditor.gui.util;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import me.drex.advancedblockeditor.gui.BaseGui;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
@@ -11,11 +12,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Brightness;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.phys.Vec3;
-import org.joml.AxisAngle4f;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import org.joml.*;
 
+import java.lang.Math;
 import java.util.*;
 
 import static me.drex.advancedblockeditor.util.PlaceholderUtils.*;
@@ -96,14 +95,33 @@ public final class EditingContext {
         this.originDisplay = originDisplay;
     }
 
+    public Pair<Vector3f, Vector3f> getMinMax() {
+        Vector3f min = new Vector3f(Float.MAX_VALUE);
+        Vector3f max = new Vector3f(-Float.MAX_VALUE);
+        for (Display.BlockDisplay blockDisplay : blockDisplays) {
+            Matrix4f transformationMatrix = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData()).getMatrix();
+            Vector4f oppositeCornerDif = new Vector4f(1, 1, 1, 1).mul(transformationMatrix);
+            min.min(blockDisplay.position().toVector3f());
+            min.min(blockDisplay.position().toVector3f().add(oppositeCornerDif.x, oppositeCornerDif.y, oppositeCornerDif.z));
+
+            max.max(blockDisplay.position().toVector3f());
+            max.max(blockDisplay.position().toVector3f().add(oppositeCornerDif.x, oppositeCornerDif.y, oppositeCornerDif.z));
+        }
+        return new Pair<>(min, max);
+    }
+
+    public Vector3f getOrigin() {
+        Pair<Vector3f, Vector3f> minMax = getMinMax();
+        return minMax.getSecond().add(minMax.getFirst()).div(2);
+    }
+
     public Map<String, Component> placeholders() {
         if (placeholdersDirty) {
             Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) originDisplay).getEntityData());
             Matrix4f matrix = transformation.getMatrix();
 
-
             Quaternionf axisAngleQuaternion = matrix.getRotation(new AxisAngle4f()).get(new Quaternionf());
-            Vector3f rotationVector = axisAngleQuaternion.getEulerAnglesXYZ(new Vector3f());;
+            Vector3f rotationVector = axisAngleQuaternion.getEulerAnglesXYZ(new Vector3f());
             int brightnessOverride = ((DisplayAccessor)originDisplay).invokeGetPackedBrightnessOverride();
             Brightness brightness = brightnessOverride != -1 ? Brightness.unpack(brightnessOverride) : null;
 

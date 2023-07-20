@@ -6,12 +6,15 @@ import me.drex.advancedblockeditor.gui.util.Setting;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
 import me.drex.advancedblockeditor.mixin.EntityAccessor;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import static me.drex.advancedblockeditor.util.TextUtils.gui;
 import static me.drex.advancedblockeditor.util.TextUtils.text;
@@ -28,7 +31,7 @@ public class RotationGui extends BaseGui {
     public void onTick() {
         super.onTick();
         context.player.sendSystemMessage(text("actionbar.rotation", context), true);
-    }
+   }
 
     @Override
     protected void buildUi() {
@@ -52,22 +55,24 @@ public class RotationGui extends BaseGui {
         float radians = (float) context.rotation.getResult();
 
         if (context.player.isShiftKeyDown()) radians *= -1;
-        Vec3 origin = context.originDisplay.position();
-        for (Display.BlockDisplay blockDisplay : context.blockDisplays) {
-            Vec3 pos = blockDisplay.position();
-            Vec3 diff = pos.subtract(origin);
-            Matrix4f matrix = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData()).getMatrix();
 
-            matrix.setTranslation(diff.toVector3f());
+        Vector3f origin = context.getOrigin();
+
+
+        for (Display.BlockDisplay blockDisplay : context.blockDisplays) {
+            Vector3f difference = blockDisplay.position().toVector3f().sub(origin);
+            Matrix4f transformationMatrix = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData()).getMatrix();
+
+            transformationMatrix.setTranslation(difference);
             switch (axis) {
-                case X -> matrix.rotateLocalX(radians);
-                case Y -> matrix.rotateLocalY(radians);
-                case Z -> matrix.rotateLocalZ(radians);
+                case X -> transformationMatrix.rotateLocalX(radians);
+                case Y -> transformationMatrix.rotateLocalY(radians);
+                case Z -> transformationMatrix.rotateLocalZ(radians);
             }
-            Vector3f translation = matrix.getTranslation(new Vector3f());
-            matrix.setTranslation(0,0,0);
-            blockDisplay.setPos(origin.add(new Vec3(translation)));
-            ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(matrix));
+            Vector3f translation = transformationMatrix.getTranslation(new Vector3f());
+            transformationMatrix.setTranslation(0,0,0);
+            blockDisplay.setPos(new Vec3(origin.add(translation, new Vector3f())));
+            ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(transformationMatrix));
         }
     }
 

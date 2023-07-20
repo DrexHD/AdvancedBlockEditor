@@ -1,5 +1,6 @@
 package me.drex.advancedblockeditor.gui;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import me.drex.advancedblockeditor.gui.util.EditingContext;
 import me.drex.advancedblockeditor.gui.util.Setting;
@@ -60,16 +61,9 @@ public class ScaleGui extends BaseGui {
 
 
     private void scale(boolean negative) {
-        Vector3f min = context.originDisplay.position().toVector3f();
-        Vector3f max = context.originDisplay.position().toVector3f();
-        for (Display.BlockDisplay blockDisplay : context.blockDisplays) {
-            Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData());
-            Vector3f scale = transformation.getScale();
-            blockDisplay.position().toVector3f().min(min, min);
-            blockDisplay.position().toVector3f().max(max, max);
-            blockDisplay.position().toVector3f().add(scale).min(min, min);
-            blockDisplay.position().toVector3f().add(scale).max(max, max);
-        }
+        Pair<Vector3f, Vector3f> minMax = context.getMinMax();
+        Vector3f min = minMax.getFirst();
+        Vector3f max = minMax.getSecond();
         Vector3f size = max.sub(min);
         Vector3f direction = currentAxis.axisSupplier.apply(context);
         direction.mul((float) context.scaleDelta());
@@ -80,17 +74,16 @@ public class ScaleGui extends BaseGui {
             return;
         }
 
-        Vec3 origin = context.originDisplay.position();
+        Vector3f origin = context.getOrigin();
         for (Display.BlockDisplay blockDisplay : this.context.blockDisplays) {
-            Vec3 pos = blockDisplay.position();
-            Vec3 diff = pos.subtract(origin);
+            Vector3f difference = blockDisplay.position().toVector3f().sub(origin);
 
             Transformation transformation = DisplayAccessor.invokeCreateTransformation(((EntityAccessor) blockDisplay).getEntityData());
 
             Vector3f scale = transformation.getScale();
 
             blockDisplay.setPos(
-                origin.add(diff.multiply(new Vec3(factor)))
+                new Vec3(origin.add(difference.mul(factor)))
             );
             scale.mul(factor);
 
