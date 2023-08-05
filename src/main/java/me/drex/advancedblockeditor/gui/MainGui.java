@@ -30,7 +30,7 @@ public class MainGui extends BaseGui {
     @Override
     protected void buildUi() {
         // TODO: add permission check
-        this.addSlot(switchElement(Items.PAINTING, "scale", ScaleGui::new));
+        this.addSlot(switchElement(Items.PAINTING, "relative_scale", context.blockDisplays.size() > 1 ? RelativeScaleGui::new : ScaleGui::new));
         this.addSlot(switchElement(Items.ARMOR_STAND, "rotation", RotationGui::new));
         this.addSlot(switchElement(Items.MINECART, "move", MoveGui::new));
         this.addSlot(switchElement(Items.LIGHT, "brightness", LightGui::new));
@@ -61,7 +61,6 @@ public class MainGui extends BaseGui {
                     close();
                 }));
     }
-
 
     @Override
     protected SwitchEntry asSwitchableUi() {
