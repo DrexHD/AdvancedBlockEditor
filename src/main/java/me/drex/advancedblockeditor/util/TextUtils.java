@@ -2,7 +2,7 @@ package me.drex.advancedblockeditor.util;
 
 import eu.pb4.placeholders.api.PlaceholderContext;
 import me.drex.advancedblockeditor.gui.util.EditingContext;
-import me.drex.message.api.Message;
+import me.drex.message.api.LocalizedMessage;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -14,19 +14,19 @@ public class TextUtils {
     public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.####");
     
     public static MutableComponent gui(String path, EditingContext context) {
-        return Message.message("gui.advanced_block_editor." + path, context.placeholders(), PlaceholderContext.of(context.originDisplay));
+        return LocalizedMessage.localized("gui.advanced_block_editor." + path, context.placeholders(), PlaceholderContext.of(context.originDisplay));
     }
 
     public static MutableComponent text(String path) {
-        return Message.message("text.advanced_block_editor." + path);
+        return LocalizedMessage.localized("text.advanced_block_editor." + path);
     }
 
     public static MutableComponent text(String path, Map<String, Component> placeholders) {
-        return Message.message("text.advanced_block_editor." + path, placeholders);
+        return LocalizedMessage.localized("text.advanced_block_editor." + path, placeholders);
     }
 
     public static MutableComponent text(String path, EditingContext context) {
-        return Message.message("text.advanced_block_editor." + path, context.placeholders(), PlaceholderContext.of(context.originDisplay));
+        return LocalizedMessage.localized("text.advanced_block_editor." + path, context.placeholders(), PlaceholderContext.of(context.originDisplay));
     }
 
     public static MutableComponent integer(Integer integer) {
