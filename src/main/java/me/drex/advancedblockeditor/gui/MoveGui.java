@@ -110,10 +110,6 @@ public class MoveGui extends BaseGui {
                 );
             }
         }
-        // TODO: CommonProtection
-        /*if (!CommonProtection.canInteractEntity(this.context.player.getEntityWorld(), this.context.armorStand, this.context.player.getGameProfile(), this.context.player)) {
-            this.context.armorStand.setPosition(pos);
-        }*/
     }
 
     @Override

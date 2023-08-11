@@ -1,5 +1,6 @@
 package me.drex.advancedblockeditor.util;
 
+import me.drex.message.api.LocalizedMessage;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Brightness;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import static me.drex.advancedblockeditor.util.TextUtils.floatF;
 import static me.drex.advancedblockeditor.util.TextUtils.integer;
+import static me.drex.message.api.LocalizedMessage.localized;
 
 public class PlaceholderUtils {
 
@@ -33,8 +35,8 @@ public class PlaceholderUtils {
 
     public static Map<String, Component> brightness(String prefix, @Nullable Brightness brightness) {
         return new HashMap<>() {{
-            put(prefix + "_block", brightness != null ? integer(brightness.block()) : TextUtils.text("brightness.not_set"));
-            put(prefix + "_sky", brightness != null ? integer(brightness.sky()) : TextUtils.text("brightness.not_set"));
+            put(prefix + "_block", brightness != null ? integer(brightness.block()) : localized("text.advanced_block_editor.brightness.not_set"));
+            put(prefix + "_sky", brightness != null ? integer(brightness.sky()) : localized("text.advanced_block_editor.brightness.not_set"));
         }};
     }
 

@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.math.Transformation;
 import me.drex.advancedblockeditor.mixin.BlockDisplayAccessor;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
+import me.drex.advancedblockeditor.util.BlockDisplayFactory;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
@@ -27,43 +28,19 @@ public class ScaleCommand {
         return literal("scale").then(
                 argument("from", BlockPosArgument.blockPos()).then(
                         argument("to", BlockPosArgument.blockPos()).then(
-                                argument("scale", DoubleArgumentType.doubleArg()).executes(ScaleCommand::execute)
+                                argument("scale", DoubleArgumentType.doubleArg()).executes(context -> {
+                                    BlockDisplayFactory.createFromWorld(
+                                        DoubleArgumentType.getDouble(context, "scale"),
+                                        BlockPosArgument.getLoadedBlockPos(context, "from"),
+                                        BlockPosArgument.getLoadedBlockPos(context, "to"),
+                                        context.getSource().getLevel(),
+                                        context.getSource().getPosition()
+                                    );
+                                    return 1;
+                                })
                         )
                 )
         );
-    }
-
-    public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        double scale = DoubleArgumentType.getDouble(context, "scale");
-        BlockPos from = BlockPosArgument.getLoadedBlockPos(context, "from");
-        BoundingBox boundingBox = BoundingBox.fromCorners(from, BlockPosArgument.getLoadedBlockPos(context, "to"));
-        CommandSourceStack source = context.getSource();
-        ServerLevel serverLevel = source.getLevel();
-        Vec3 origin = source.getPosition();
-        for (BlockPos blockPos : BlockPos.betweenClosed(boundingBox.minX(), boundingBox.minY(), boundingBox.minZ(), boundingBox.maxX(), boundingBox.maxY(), boundingBox.maxZ())) {
-            double dx = (boundingBox.minX() - blockPos.getX()) * scale;
-            double dy = (boundingBox.minY() - blockPos.getY()) * scale;
-            double dz = (boundingBox.minZ() - blockPos.getZ()) * scale;
-            BlockState blockState = serverLevel.getBlockState(blockPos);
-            // Check if all surrounding blocks are solid
-            if (serverLevel.getBlockState(blockPos.above()).isRedstoneConductor(serverLevel, blockPos.above()) &&
-                    serverLevel.getBlockState(blockPos.below()).isRedstoneConductor(serverLevel, blockPos.below()) &&
-                    serverLevel.getBlockState(blockPos.north()).isRedstoneConductor(serverLevel, blockPos.north()) &&
-                    serverLevel.getBlockState(blockPos.east()).isRedstoneConductor(serverLevel, blockPos.east()) &&
-                    serverLevel.getBlockState(blockPos.south()).isRedstoneConductor(serverLevel, blockPos.south()) &&
-                    serverLevel.getBlockState(blockPos.west()).isRedstoneConductor(serverLevel, blockPos.west())
-            ) continue;
-            if (blockState.isAir() || !blockState.getFluidState().isEmpty()) continue;
-            EntityType.BLOCK_DISPLAY.spawn(serverLevel, null, blockDisplay -> {
-                ((BlockDisplayAccessor)blockDisplay).invokeSetBlockState(blockState);
-                blockDisplay.setYRot(0);
-                blockDisplay.setXRot(0);
-                blockDisplay.moveTo(origin.x - dx, origin.y - dy, origin.z - dz);
-                ((DisplayAccessor) blockDisplay).invokeSetTransformation(new Transformation(null, null, new Vector3f((float) scale, (float) scale, (float) scale), null));
-            }, BlockPos.containing(origin.x - dx, origin.y - dy, origin.z - dz), MobSpawnType.COMMAND, false, false);
-
-        }
-        return 1;
     }
 
 }

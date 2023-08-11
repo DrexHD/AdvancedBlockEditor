@@ -48,7 +48,7 @@ public final class EditingContext {
         this.player = player;
         this.blockDisplays = blockDisplays;
         updateOriginDisplay();
-        ((EditingPlayer) player).setEditing(true);
+        ((EditingPlayer) player).advancedBlockEditor$setEditing(true);
     }
 
     public EditingContext(ServerPlayer player, Display.BlockDisplay originDisplay) {
@@ -161,7 +161,7 @@ public final class EditingContext {
     }
 
     public void close() {
-        ((EditingPlayer) player).setEditing(false);
+        ((EditingPlayer) player).advancedBlockEditor$setEditing(false);
     }
 
 

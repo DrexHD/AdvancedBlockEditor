@@ -49,6 +49,27 @@
   "gui.advanced_block_editor.back": "<red>Back",
   "gui.advanced_block_editor.close": "<red>Close",
 
+  "text.advanced_block_editor.tools.block_selector.action.reset": "<red>Block selection has been reset.",
+
+  "text.advanced_block_editor.tools.entity_selector.action.reset": "<red>Entity selection has been reset.",
+
+  "text.advanced_block_editor.tools.block_selector.actionbar.pos1": "<keybind:key.attack> to select the first position",
+  "text.advanced_block_editor.tools.block_selector.actionbar.pos2": "<keybind:key.use> to select the second position",
+  "text.advanced_block_editor.tools.block_selector.actionbar.selected": "<gold>${blocks}</gold> blocks selected. Press <green><keybind:key.drop></green> to <green>confirm</green> or <red><keybind:key.sneak> + <keybind:key.drop></red> to <red>cancel</red> your selection!",
+
+  "text.advanced_block_editor.tools.entity_selector.actionbar.pos1": "<keybind:key.attack> to select the first position",
+  "text.advanced_block_editor.tools.entity_selector.actionbar.pos2": "<keybind:key.use> to select the second position",
+  "text.advanced_block_editor.tools.entity_selector.actionbar.selected": "<gold>${entities}</gold> entities selected. Press <green><keybind:key.drop></green> to <green>confirm</green> or <red><keybind:key.sneak> + <keybind:key.drop></red> to <red>cancel</red> your selection!",
+
+  "text.advanced_block_editor.tools.block_selector.name": "<#084aa6>Block Selector",
+  "text.advanced_block_editor.tools.block_selector.lore": "<yellow>1. <keybind:key.attack> <gold>/ <yellow><keybind:key.use> <gold>to select an area of blocks!\n<yellow>2. <gold>Press <yellow><keybind:key.drop><gold> to confirm your block selection!",
+
+  "text.advanced_block_editor.tools.entity_selector.name": "<#45aeff>Entity Selector",
+  "text.advanced_block_editor.tools.entity_selector.lore": "<yellow>1. <keybind:key.attack> <gold>/ <yellow><keybind:key.use> <gold>to select an area of entities!\n<yellow>2. <gold>Press <yellow><keybind:key.drop><gold> to confirm your entity selection!",
+
+  "text.advanced_block_editor.tools.single_entity_selector.name": "<#008ffc>Single Entity Selector",
+  "text.advanced_block_editor.tools.single_entity_selector.lore": "<yellow>1. <gold>Select an entity by looking at it\n<yellow>2. <keybind:key.use> <gold>to confirm your selection!",
+
   "text.advanced_block_editor.actionbar.scale": "Current scale: <red>${scale_x} <gray>x <green>${scale_y} <gray>x <blue>${scale_z} <dark_gray>| <white>Factor: <gold>${scale_delta}",
   "text.advanced_block_editor.actionbar.relative_scale": "Current scale: <red>${scale_x} <gray>x <green>${scale_y} <gray>x <blue>${scale_z} <dark_gray>| <white>Factor: <green>+${relative_scale_delta}% <gray>/ <red>-${relative_scale_delta_inverse}%",
   "text.advanced_block_editor.actionbar.light": "Current light: <yellow>Block: ${brightness_block}<gray>, <aqua>Sky: ${brightness_sky}",

@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 import java.text.DecimalFormat;
-import java.util.Map;
 
 public class TextUtils {
 
@@ -15,14 +14,6 @@ public class TextUtils {
     
     public static MutableComponent gui(String path, EditingContext context) {
         return LocalizedMessage.localized("gui.advanced_block_editor." + path, context.placeholders(), PlaceholderContext.of(context.originDisplay));
-    }
-
-    public static MutableComponent text(String path) {
-        return LocalizedMessage.localized("text.advanced_block_editor." + path);
-    }
-
-    public static MutableComponent text(String path, Map<String, Component> placeholders) {
-        return LocalizedMessage.localized("text.advanced_block_editor." + path, placeholders);
     }
 
     public static MutableComponent text(String path, EditingContext context) {

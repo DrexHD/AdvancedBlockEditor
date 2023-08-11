@@ -1,17 +1,22 @@
 package me.drex.advancedblockeditor.util.interfaces;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 public interface EditingPlayer {
 
-    void setEditing(boolean editing);
+    void advancedBlockEditor$setEditing(boolean editing);
 
-    boolean isEditing();
+    boolean advancedBlockEditor$isEditing();
 
-    boolean isSelecting();
+    boolean advancedBlockEditor$isSelecting();
 
-    void setPos1(Vec3 pos1);
+    void advancedBlockEditor$setEntityPos1(Vec3 entityPos1);
 
-    void setPos2(Vec3 pos2);
+    void advancedBlockEditor$setEntityPos2(Vec3 entityPos2);
+
+    void advancedBlockEditor$setBlockPos1(BlockPos blockPos1);
+
+    void advancedBlockEditor$setBlockPos2(BlockPos blockPos2);
 
 }

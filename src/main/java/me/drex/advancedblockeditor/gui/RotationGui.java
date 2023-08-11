@@ -6,15 +6,12 @@ import me.drex.advancedblockeditor.gui.util.Setting;
 import me.drex.advancedblockeditor.mixin.DisplayAccessor;
 import me.drex.advancedblockeditor.mixin.EntityAccessor;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import static me.drex.advancedblockeditor.util.TextUtils.gui;
 import static me.drex.advancedblockeditor.util.TextUtils.text;

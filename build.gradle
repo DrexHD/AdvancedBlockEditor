@@ -89,3 +89,10 @@ publishing {
         // retrieving dependencies.
     }
 }
+
+afterEvaluate {
+    loom.runs.configureEach {
+        // https://fabricmc.net/wiki/tutorial:mixin_hotswaps
+        vmArg "-javaagent:${ configurations.compileClasspath.find { it.name.contains("sponge-mixin") } }"
+    }
+}
