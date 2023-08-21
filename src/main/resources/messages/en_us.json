@@ -42,9 +42,15 @@
   "gui.advanced_block_editor.entry.relative_scale": "<light_purple>Relative Scale",
   "gui.advanced_block_editor.entry.rotation": "<gold>Rotate",
   "gui.advanced_block_editor.entry.move": "<aqua>Move",
+  "gui.advanced_block_editor.entry.misc": "<red>Miscellaneous",
   "gui.advanced_block_editor.entry.brightness": "<yellow>Brightness",
   "gui.advanced_block_editor.entry.nbt": "<green>NBT Data",
   "gui.advanced_block_editor.entry.destroy": "<bold><red>Destroy",
+
+  "gui.advanced_block_editor.entry.misc.billboard.fixed": "<gray>Billboard (Fixed)",
+  "gui.advanced_block_editor.entry.misc.billboard.vertical": "<green>Billboard (Vertical)",
+  "gui.advanced_block_editor.entry.misc.billboard.horizontal": "<blue>Billboard (Horizontal)",
+  "gui.advanced_block_editor.entry.misc.billboard.center": "<dark_purple>Billboard (Center)",
 
   "gui.advanced_block_editor.back": "<red>Back",
   "gui.advanced_block_editor.close": "<red>Close",
@@ -62,13 +68,13 @@
   "text.advanced_block_editor.tools.entity_selector.actionbar.selected": "<gold>${entities}</gold> entities selected. Press <green><keybind:key.drop></green> to <green>confirm</green> or <red><keybind:key.sneak> + <keybind:key.drop></red> to <red>cancel</red> your selection!",
 
   "text.advanced_block_editor.tools.block_selector.name": "<#084aa6>Block Selector",
-  "text.advanced_block_editor.tools.block_selector.lore": "<yellow>1. <keybind:key.attack> <gold>/ <yellow><keybind:key.use> <gold>to select an area of blocks!\n<yellow>2. <gold>Press <yellow><keybind:key.drop><gold> to confirm your block selection!",
+  "text.advanced_block_editor.tools.block_selector.lore": "<gray><italic>Select an area of blocks that should be converted to display entities</italic></gray>\n<yellow>1. <keybind:key.attack> <gold>/ <yellow><keybind:key.use> <gold>to select an area of blocks!\n<yellow>2. <gold>Press <yellow><keybind:key.drop><gold> to confirm your block selection!",
 
   "text.advanced_block_editor.tools.entity_selector.name": "<#45aeff>Entity Selector",
-  "text.advanced_block_editor.tools.entity_selector.lore": "<yellow>1. <keybind:key.attack> <gold>/ <yellow><keybind:key.use> <gold>to select an area of entities!\n<yellow>2. <gold>Press <yellow><keybind:key.drop><gold> to confirm your entity selection!",
+  "text.advanced_block_editor.tools.entity_selector.lore": "<gray><italic>Select an area of entities that you want to edit</italic></gray>\n<yellow>1. <keybind:key.attack> <gold>/ <yellow><keybind:key.use> <gold>to select an area of entities!\n<yellow>2. <gold>Press <yellow><keybind:key.drop><gold> to confirm your entity selection!",
 
   "text.advanced_block_editor.tools.single_entity_selector.name": "<#008ffc>Single Entity Selector",
-  "text.advanced_block_editor.tools.single_entity_selector.lore": "<yellow>1. <gold>Select an entity by looking at it\n<yellow>2. <keybind:key.use> <gold>to confirm your selection!",
+  "text.advanced_block_editor.tools.single_entity_selector.lore": "<dark_green><underlined>Select</underlined>\n<yellow>1. <gold>Select an entity by looking at it\n<yellow>2. <keybind:key.use> <gold>to confirm your selection!\n<dark_green><underlined>Create</underlined>\n<yellow><keybind:key.use> <gold>a block to convert it to a display entity",
 
   "text.advanced_block_editor.actionbar.scale": "Current scale: <red>${scale_x} <gray>x <green>${scale_y} <gray>x <blue>${scale_z} <dark_gray>| <white>Factor: <gold>${scale_delta}",
   "text.advanced_block_editor.actionbar.relative_scale": "Current scale: <red>${scale_x} <gray>x <green>${scale_y} <gray>x <blue>${scale_z} <dark_gray>| <white>Factor: <green>+${relative_scale_delta}% <gray>/ <red>-${relative_scale_delta_inverse}%",

@@ -72,13 +72,13 @@ public class MoveGui extends BaseGui {
                 })
         );
 
-        this.setSlot(4, baseElement(Items.LIME_CONCRETE, gui("action.move.positive.full", context))
+        this.setSlot(3, baseElement(Items.LIME_CONCRETE, gui("action.move.positive.full", context))
                 .setCallback((x, y, z, c) -> {
                     this.move(context.moveDelta());
                 })
         );
 
-        this.setSlot(5, baseElement(Items.LIME_DYE, gui("action.move.positive.half", context))
+        this.setSlot(4, baseElement(Items.LIME_DYE, gui("action.move.positive.half", context))
                 .setCallback((x, y, z, c) -> {
                     this.move(context.moveDelta() * 0.5);
                 })
@@ -116,7 +116,6 @@ public class MoveGui extends BaseGui {
     protected SwitchEntry asSwitchableUi() {
         return new SwitchEntry(MoveGui::new, this.getSelectedSlot());
     }
-
 
     enum CurrentAxis {
         LOOK(null),

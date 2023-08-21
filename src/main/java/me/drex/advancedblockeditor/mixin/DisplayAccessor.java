@@ -21,6 +21,9 @@ public interface DisplayAccessor {
     int invokeGetPackedBrightnessOverride();
 
     @Invoker
+    void invokeSetBillboardConstraints(Display.BillboardConstraints billboardConstraints);
+
+    @Invoker
     static Transformation invokeCreateTransformation(SynchedEntityData synchedEntityData) {
         throw new AssertionError();
     }

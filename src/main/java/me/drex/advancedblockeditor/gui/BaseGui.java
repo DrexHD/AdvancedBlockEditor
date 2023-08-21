@@ -3,9 +3,11 @@ package me.drex.advancedblockeditor.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.HotbarGui;
+import me.drex.advancedblockeditor.gui.util.Displayable;
 import me.drex.advancedblockeditor.gui.util.EditingContext;
 import me.drex.advancedblockeditor.gui.util.Setting;
 import me.drex.advancedblockeditor.util.TextUtils;
+import me.drex.message.api.LocalizedMessage;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.MutableComponent;
@@ -16,7 +18,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import static me.drex.message.api.LocalizedMessage.localized;
 
 public abstract class BaseGui extends HotbarGui {
 
@@ -34,16 +42,16 @@ public abstract class BaseGui extends HotbarGui {
         }
         this.buildUi();
         this.setSlot(8, new GuiElementBuilder(Items.SPRUCE_DOOR)
-                .setName(TextUtils.gui(context.interfaceList.isEmpty() ? "close" : "back", context))
-                .hideFlags()
-                .setCallback((x, y, z, c) -> {
-                    this.playClickSound();
-                    if (this.context == null || this.context.interfaceList.isEmpty()) {
-                        this.close();
-                    } else {
-                        this.switchUi(this.context.interfaceList.remove(0), false);
-                    }
-                })
+            .setName(TextUtils.gui(context.interfaceList.isEmpty() ? "close" : "back", context))
+            .hideFlags()
+            .setCallback((x, y, z, c) -> {
+                this.playClickSound();
+                if (this.context == null || this.context.interfaceList.isEmpty()) {
+                    this.close();
+                } else {
+                    this.switchUi(this.context.interfaceList.remove(0), false);
+                }
+            })
         );
 
         this.setSlot(37, this.player.getItemBySlot(EquipmentSlot.HEAD).copy());
@@ -58,16 +66,32 @@ public abstract class BaseGui extends HotbarGui {
 
     protected GuiElementBuilder baseElement(Item item, MutableComponent component) {
         return new GuiElementBuilder(item)
-                .setName(component)
-                .hideFlags();
+            .setName(component)
+            .hideFlags();
     }
 
     protected GuiElementBuilder switchElement(Item item, String name, SwitchableUi ui) {
         return new GuiElementBuilder(item)
-                // TODO:
-                .setName(TextUtils.gui("entry." + name, context))
-                .hideFlags()
-                .setCallback(switchCallback(ui));
+            // TODO:
+            .setName(TextUtils.gui("entry." + name, context))
+            .hideFlags()
+            .setCallback(switchCallback(ui));
+    }
+
+    protected <T extends Displayable> GuiElementBuilder enumElement(T[] values, Supplier<T> supplier, Consumer<T> consumer) {
+        return baseElement(supplier.get().getDisplayItem(), localized(supplier.get().getDisplayName())).setCallback(() -> {
+            int i = ArrayUtils.indexOf(values, supplier.get());
+            i += values.length;
+            if (this.player.isShiftKeyDown()) {
+                i -= 1;
+            } else {
+                i += 1;
+            }
+            i %= values.length;
+            this.playClickSound();
+            consumer.accept(values[i]);
+            this.buildUi();
+        });
     }
 
     @Override

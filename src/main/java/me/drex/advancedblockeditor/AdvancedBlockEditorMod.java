@@ -7,7 +7,7 @@ import me.drex.advancedblockeditor.util.BlockDisplayFactory;
 import me.drex.advancedblockeditor.util.BlockDisplaySelector;
 import me.drex.advancedblockeditor.util.Tool;
 import me.drex.advancedblockeditor.util.interfaces.EditingPlayer;
-import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -28,12 +28,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class AdvancedBlockEditorMod implements DedicatedServerModInitializer {
+public class AdvancedBlockEditorMod implements ModInitializer {
 
     @Override
-    public void onInitializeServer() {
+    public void onInitialize() {
         CommandRegistrationCallback.EVENT.register((dispatcher, commandBuildContext, commandSelection) -> {
-            AdvancedBlockEditorCommand.register(dispatcher, commandBuildContext);
+            AdvancedBlockEditorCommand.register(dispatcher);
         });
         UseItemCallback.EVENT.register((Player player, Level level, InteractionHand hand) -> {
             if (level.isClientSide) {

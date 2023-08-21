@@ -32,27 +32,7 @@ public class MainGui extends BaseGui {
         this.addSlot(switchElement(Items.PAINTING, context.blockDisplays.size() > 1 ? "relative_scale" : "scale", context.blockDisplays.size() > 1 ? RelativeScaleGui::new : ScaleGui::new));
         this.addSlot(switchElement(Items.ARMOR_STAND, "rotation", RotationGui::new));
         this.addSlot(switchElement(Items.MINECART, "move", MoveGui::new));
-        this.addSlot(switchElement(Items.LIGHT, "brightness", LightGui::new));
-        if (!context.hasMultipleDisplays()) {
-            this.addSlot(new GuiElementBuilder(Items.BIRCH_SIGN)
-                .setName(TextUtils.gui("entry.nbt", context))
-                .setCallback(() -> {
-                    EntityDataAccessor dataAccessor = new EntityDataAccessor(context.originDisplay);
-                    context.player.sendSystemMessage(dataAccessor.getPrintSuccess(dataAccessor.getData()));
-                }));
-        }
-        this.addSlot(new GuiElementBuilder(Items.COMMAND_BLOCK)
-            .setName(TextUtils.gui("entry.clone", context))
-            .setCallback(() -> {
-                for (Display.BlockDisplay blockDisplay : context.blockDisplays) {
-                    CompoundTag tag = new CompoundTag();
-                    ((BlockDisplayAccessor) blockDisplay).invokeAddAdditionalSaveData(tag);
-                    BlockDisplayFactory.create(player.serverLevel(), tag, blockDisplay.position());
-                }
-                playClickSound();
-            })
-        );
-
+        this.addSlot(switchElement(Items.REDSTONE, "misc", MiscGui::new));
         this.addSlot(new GuiElementBuilder(Items.TNT)
             .setName(TextUtils.gui("entry.destroy", context))
             .setCallback(() -> {

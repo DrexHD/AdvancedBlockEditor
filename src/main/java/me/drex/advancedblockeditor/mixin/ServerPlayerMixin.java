@@ -199,7 +199,7 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
     private void confirmSelection(boolean bl, CallbackInfoReturnable<Boolean> cir) {
         Inventory inventory = getInventory();
         if (Tool.ENTITY_SELECTOR.isActive(this)) {
-            if (isCrouching()) {
+            if (isShiftKeyDown()) {
                 entityPos1 = null;
                 entityPos2 = null;
                 sendSystemMessage(localized("text.advanced_block_editor.tools.entity_selector.action.reset"));
@@ -221,7 +221,7 @@ public abstract class ServerPlayerMixin extends Player implements EditingPlayer 
                 }
             }
         } else if (Tool.BLOCK_SELECTOR.isActive(this)) {
-            if (isCrouching()) {
+            if (isShiftKeyDown()) {
                 blockPos1 = null;
                 blockPos2 = null;
                 sendSystemMessage(localized("text.advanced_block_editor.tools.block_selector.action.reset"));

@@ -11,7 +11,7 @@
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
-    "server": [
+    "main": [
       "me.drex.advancedblockeditor.AdvancedBlockEditorMod"
     ]
   },

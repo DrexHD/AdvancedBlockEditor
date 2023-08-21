@@ -24,13 +24,9 @@ import static net.minecraft.commands.Commands.literal;
 public class AdvancedBlockEditorCommand {
 
     // TODO: Permissions
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralCommandNode<CommandSourceStack> commandNode = dispatcher.register(
                 literal("advancedblockeditor").then(
-                        literal("block").then(
-                                argument("block", BlockStateArgument.block(commandBuildContext)).executes(AdvancedBlockEditorCommand::createBlock)
-                        )
-                ).then(
                         literal("reload").executes(context -> {
                             MessageAPI.reload();
                             return 1;
@@ -42,17 +38,6 @@ public class AdvancedBlockEditorCommand {
                 )
         );
         dispatcher.register(literal("abe").redirect(commandNode));
-    }
-
-    private static int createBlock(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        BlockState blockState = BlockStateArgument.getBlock(context, "block").getState();
-        CommandSourceStack source = context.getSource();
-        ServerPlayer serverPlayer = source.getPlayerOrException();
-        if (((EditingPlayer)serverPlayer).advancedBlockEditor$isEditing()) return 0;
-        BlockPos blockPos = BlockPos.containing(source.getPosition());
-        Display.BlockDisplay blockDisplay = BlockDisplayFactory.create(source.getLevel(), blockState, blockPos);
-        new MainGui(new EditingContext(serverPlayer, blockDisplay));
-        return 1;
     }
 
     private static int giveTools(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
